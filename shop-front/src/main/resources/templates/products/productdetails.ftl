@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello</title>
+    <title>L2Shop</title>
     <link href="/css/main.css" rel="stylesheet">
 </head>
 <body>
 <a href="/">Home</a><br>
 <a href="/products/list">Go to products list</a>
-<h1 class="hello-title">Hello, Buyer!!!</h1>
+<h1 class="hello-title">Hello, Admin!</h1>
 
 <h2>Product details:</h2>
 

@@ -1,5 +1,7 @@
 package sidmeyer.l2shop.dto;
 
+import java.util.Objects;
+
 /**
  * Created by Stas on 19.08.2018.
  */
@@ -30,5 +32,19 @@ public class CategoryDto {
 
 	public void setParentId(long parentId) {
 		this.parentId = parentId;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CategoryDto that = (CategoryDto) o;
+		return Objects.equals(name, that.name);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(name);
 	}
 }

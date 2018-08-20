@@ -6,9 +6,11 @@ import sidmeyer.l2shop.core.controller.CategoriesDao;
 import sidmeyer.l2shop.core.controller.ProductsDao;
 import sidmeyer.l2shop.core.model.Category;
 import sidmeyer.l2shop.core.model.Product;
+import sidmeyer.l2shop.dto.CategoryDto;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,6 +54,25 @@ public class ProductsService {
 	public void editProductCategories(final long productId, final Set<Category> categories) {
 		Product product = productsDao.findById(productId).get();
 		product.setCategories(categories);
+		productsDao.save(product);
+	}
+
+	public Set<Category> getAllCategories() {
+		List<Category> categoriesList = (List<Category>) categoriesDao.findAll();
+		return new HashSet<>(categoriesList);
+	}
+
+	public void addCategoryToProduct(final long productId, final long categoryId) {
+		Category category = categoriesDao.findById(categoryId).get();
+		Product product = getProduct(productId);
+		product.getCategories().add(category);
+		productsDao.save(product);
+	}
+
+	public void deleteCategoryFromProduct(final long productId, final long categoryId) {
+		Category category = categoriesDao.findById(categoryId).get();
+		Product product = getProduct(productId);
+		product.getCategories().remove(category);
 		productsDao.save(product);
 	}
 

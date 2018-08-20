@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello</title>
+    <title>L2Shop</title>
     <link href="/css/main.css" rel="stylesheet">
 </head>
 <body>
 <a href="/">Home</a>
-<h1 class="hello-title">Hello, Buyer!!!</h1>
+<h1 class="hello-title">Hello, Buyer!</h1>
 
 <h2>Available products:</h2>
 
@@ -22,7 +22,7 @@
     <#list products as product>
         <tr>
             <td>${product.id}</td>
-            <td><a href="http://127.0.0.1:8081/products/details?productid=${product.id}">${product.name}</a></td>
+            <td><a href="http://127.0.0.1:8081/products/details?product=${product.id}">${product.name}</a></td>
             <td>${product.price}</td>
             <td><img src="${product.imageUrl}" height="100" /></td>
         </tr>

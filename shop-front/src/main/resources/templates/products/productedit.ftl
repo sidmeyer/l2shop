@@ -4,15 +4,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello</title>
+    <title>L2Shop</title>
     <link href="/css/main.css" rel="stylesheet">
 </head>
 <body>
 <a href="/">Home</a><br>
 <a href="/products/management">Back to products management</a>
-<h1 class="hello-title">Hello, Buyer!!!</h1>
+<h1 class="hello-title">Hello, Admin!</h1>
 
 <h2>Edit product ${product.name}</h2>
+<img src="${product.imageUrl}" height="100">
 
 <@spring.bind "product"/>
 
@@ -38,21 +39,41 @@
 
 <br>
 <h2>Product categories:</h2>
-<br>
 <table border="1">
     <thead>
     <td>ID</td>
     <td>Name</td>
+    <td>Delete</td>
     </thead>
     <tbody>
     <#list categories as category>
-        <tr>
-            <td>${category.id}</td>
-            <td>${category.name}</td>
-        </tr>
+    <tr>
+        <td>${category.id}</td>
+        <td>${category.name}</td>
+        <td><a href="/products/deletecategory?product=${product.id}&category=${category.id}">Delete</a></td>
+    </tr>
     </#list>
     </tbody>
 </table>
+<br>
+<h2>Other categories:</h2>
+<table border="1">
+    <thead>
+    <td>ID</td>
+    <td>Name</td>
+    <td>Add</td>
+    </thead>
+    <tbody>
+    <#list otherCategories as otherCategory>
+    <tr>
+        <td>${otherCategory.id}</td>
+        <td>${otherCategory.name}</td>
+        <td><a href="/products/addcategory?product=${product.id}&category=${otherCategory.id}">Add</a></td>
+    </tr>
+    </#list>
+    </tbody>
+</table>
+
 
 <script src="/js/main.js"></script>
 </body>

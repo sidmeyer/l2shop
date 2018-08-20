@@ -68,4 +68,24 @@ public class ProductsController {
 		productsService.editProductCategories(productId, categories);
 		return "Categories for product with id " + productId + " was edited";
 	}
+
+	@RequestMapping(path = Api.Categories.CATEGORIES_PATH, method = RequestMethod.GET)
+	public Set<CategoryDto> getAllCategories() {
+		return productsService.getAllCategories()
+				.stream()
+				.map(Category::toDto)
+				.collect(Collectors.toSet());
+	}
+
+	@RequestMapping(path = Api.Products.PRODUCTS_CATEGORIES_ID_PATH, method = RequestMethod.POST)
+	public String addCategoryToProduct(@PathVariable long productId, @PathVariable long categoryId) {
+		productsService.addCategoryToProduct(productId, categoryId);
+		return "Category with ID " + categoryId + " has been added to product with ID " + productId;
+	}
+
+	@RequestMapping(path = Api.Products.PRODUCTS_CATEGORIES_ID_PATH, method = RequestMethod.DELETE)
+	public String deleteCategoryFromProduct(@PathVariable long productId, @PathVariable long categoryId) {
+		productsService.deleteCategoryFromProduct(productId, categoryId);
+		return "Category with ID " + categoryId + " has been deleted from product with ID " + productId;
+	}
 }

@@ -19,6 +19,7 @@ public interface Api {
 		String PRODUCTS_PATH = "/products";
 		String PRODUCTS_ID_PATH = PRODUCTS_PATH + "/{productId}";
 		String PRODUCTS_CATEGORIES_PATH = PRODUCTS_ID_PATH + "/categories";
+		String PRODUCTS_CATEGORIES_ID_PATH = PRODUCTS_CATEGORIES_PATH + "/{categoryId}";
 	}
 
 	interface Categories {
