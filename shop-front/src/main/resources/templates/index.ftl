@@ -11,5 +11,7 @@
     <a href="/products/list">PRODUCTS LIST</a>
     <br>
     <a href="/products/management">PRODUCTS MANAGEMENT</a>
+    <br>
+    <a href="http://127.0.0.1:8080/h2/">H2 CONSOLE</a>
 </body>
 </html>

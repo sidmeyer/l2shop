@@ -21,6 +21,7 @@ public class ProductsController {
 	@Autowired
 	private ProductsService productsService;
 
+	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(path = Api.Products.PRODUCTS_PATH, method = RequestMethod.POST)
 	public long createProduct(@RequestBody ProductDto productDto) {
 		return productsService.createProduct(Product.createFromDto(productDto));

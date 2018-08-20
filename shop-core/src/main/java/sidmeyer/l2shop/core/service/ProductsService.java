@@ -6,14 +6,12 @@ import sidmeyer.l2shop.core.controller.CategoriesDao;
 import sidmeyer.l2shop.core.controller.ProductsDao;
 import sidmeyer.l2shop.core.model.Category;
 import sidmeyer.l2shop.core.model.Product;
-import sidmeyer.l2shop.dto.CategoryDto;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by Stas on 15.08.2018.
