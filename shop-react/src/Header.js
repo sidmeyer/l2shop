@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
-import ProductList from './products/ProductList'
-import {Router} from 'react-router';
-import {Switch} from 'react-router';
-import {Route} from 'react-router';
+import ReactDOM from 'react-dom';
+import {BrowserRouter, Route, Switch, Redirect, Link} from 'react-router-dom';
+import ProductList from "./products/ProductList";
 
 class Header extends Component {
     render() {
@@ -23,6 +22,14 @@ class Header extends Component {
                     </tr>
                     </tbody>
                 </table>
+                <BrowserRouter >
+                    <Switch>
+                        <Route path="/products/list" component={ProductList} />
+                    </Switch>
+                </BrowserRouter>
+                <a href={ProductList}>aaa</a>
+                <a href="/products/list">aaaAAA</a>
+
             </div>
         );
     }

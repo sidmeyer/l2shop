@@ -20,6 +20,7 @@ class ProductList extends Component {
     render() {
         return (
             <div className="ProductList">
+                This is product list
                 <table>
                     <thead>
                     <td>ID</td>
