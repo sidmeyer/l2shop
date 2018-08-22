@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sidmeyer.l2shop.core.model.Category;
 import sidmeyer.l2shop.core.model.Product;
+import sidmeyer.l2shop.core.repository.CategoriesDao;
+import sidmeyer.l2shop.core.repository.ProductsDao;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
