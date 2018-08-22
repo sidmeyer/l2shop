@@ -5,7 +5,7 @@ import Header from './Header';
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import ProductList from "./products/ProductList";
 import Cart from "./Cart";
-import Test from './products/Test'
+// import Test from './products/Test'
 
 class App extends Component {
   render() {
