@@ -1,4 +1,4 @@
-package sidmeyer.l2shop.core.controller;
+package sidmeyer.l2shop.core.service;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

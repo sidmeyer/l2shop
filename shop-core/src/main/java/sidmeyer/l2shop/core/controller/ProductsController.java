@@ -16,12 +16,13 @@ import java.util.stream.Collectors;
  * Created by Stas on 16.08.2018.
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductsController {
 
 	@Autowired
 	private ProductsService productsService;
 
-	@CrossOrigin(origins = "http://localhost:3000")
+//	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(path = Api.Products.PRODUCTS_PATH, method = RequestMethod.POST)
 	public long createProduct(@RequestBody ProductDto productDto) {
 		return productsService.createProduct(Product.createFromDto(productDto));

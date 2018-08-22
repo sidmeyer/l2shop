@@ -17,18 +17,12 @@ class Header extends Component {
                     <tbody>
                     <tr>
                         <td><a href="/">Home</a></td>
-                        <td>Products</td>
+                        <td><a href="/products/list">Products</a></td>
                         <td><a href="/cart">Cart</a></td>
                     </tr>
                     </tbody>
                 </table>
-                <BrowserRouter >
-                    <Switch>
-                        <Route path="/products/list" component={ProductList} />
-                    </Switch>
-                </BrowserRouter>
-                <a href={ProductList}>aaa</a>
-                <a href="/products/list">aaaAAA</a>
+
 
             </div>
         );

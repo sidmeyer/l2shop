@@ -2,8 +2,6 @@ package sidmeyer.l2shop.core.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sidmeyer.l2shop.core.controller.CategoriesDao;
-import sidmeyer.l2shop.core.controller.ProductsDao;
 import sidmeyer.l2shop.core.model.Category;
 import sidmeyer.l2shop.core.model.Product;
 
