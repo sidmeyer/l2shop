@@ -3,16 +3,17 @@ import '../App.css';
 
 class ProductDetails extends Component {
 
-    constructor() {
+    constructor(props) {
         super();
 
         this.state = {
-            productJson: {id:5}
+            productJson: {},
+            id: props.match.params.id
         };
     }
 
     componentDidMount() {
-        fetch('http://127.0.0.1:8080/products/' + 5)//this.state.productsJson.id)
+        fetch('http://127.0.0.1:8080/products/' + this.state.id)
             .then(response => {
                 return response.json();
             })
@@ -36,7 +37,7 @@ class ProductDetails extends Component {
                     <tbody>
                     <tr>
                         <td width="400"><b>{productJson.name}</b></td>
-                        <td rowSpan="4"><img src={productJson.imageUrl} alt={productJson.name} width="150"/></td>
+                        <td rowSpan="4" align="center"><img src={productJson.imageUrl} alt={productJson.name} width="150"/></td>
                     </tr>
                     <tr>
                         <td>description. in prrogress...</td>

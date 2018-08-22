@@ -30,6 +30,7 @@
 .wideTable {
   text-align: left;
   width: 600px;
+  height: 350px;
   border: 1px black;
   color: black;
 }
