@@ -7,13 +7,13 @@ function ProductItem(props) {
 
     return (
         <div>
-            <table>
+            <table align="center" border="1" width="600">
                 <tbody>
                 <tr>
-                    <td>Id: {product.id}</td>
-                    <td><img src={product.imageUrl} alt={product.name} height="100"/></td>
-                    <td><a href="http://127.0.0.1:8080/h2">{product.name}</a></td>
-                    <td>{product.price}</td>
+                    <td width="50">Id: {product.id}</td>
+                    <td width="200"><a href={'/products/' + product.id}>{product.name}</a></td>
+                    <td width="100">${product.price}</td>
+                    <td ><img src={product.imageUrl} alt={product.name} height="100"/></td>
                 </tr>
                 </tbody>
             </table>
