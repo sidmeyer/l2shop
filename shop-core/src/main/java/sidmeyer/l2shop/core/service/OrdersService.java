@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sidmeyer.l2shop.core.model.*;
 import sidmeyer.l2shop.commons.OrderStatus;
+import sidmeyer.l2shop.core.repository.OrdersDao;
+import sidmeyer.l2shop.core.repository.ProductsInOrdersDao;
 
 import javax.annotation.PostConstruct;
 import java.util.*;

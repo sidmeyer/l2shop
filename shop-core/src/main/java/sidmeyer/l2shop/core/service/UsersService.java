@@ -3,6 +3,7 @@ package sidmeyer.l2shop.core.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sidmeyer.l2shop.core.model.User;
+import sidmeyer.l2shop.core.repository.UsersDao;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
