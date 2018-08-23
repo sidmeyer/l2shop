@@ -2,6 +2,7 @@ package sidmeyer.l2shop.core.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sidmeyer.l2shop.core.exceptions.UserNotFoundException;
 import sidmeyer.l2shop.core.model.User;
 import sidmeyer.l2shop.core.repository.UsersDao;
 
@@ -17,8 +18,8 @@ public class UsersService {
 	@Autowired
 	private UsersDao usersDao;
 
-	public long createUser(final User user) {
-		return usersDao.save(user).getId();
+	public User createUser(final User user) {
+		return usersDao.save(user);
 	}
 
 	public List<User> getUsers() {
@@ -26,6 +27,9 @@ public class UsersService {
 	}
 
 	public void updateUser(final User user) {
+		if (!usersDao.findById(user.getId()).isPresent()) {
+			throw new UserNotFoundException("User with id " + user.getId() + " does not exist.");
+		}
 		usersDao.save(user);
 	}
 

@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import sidmeyer.l2shop.api.Api;
 import sidmeyer.l2shop.core.model.Category;
 import sidmeyer.l2shop.core.model.Product;
+import sidmeyer.l2shop.core.service.ProductsService;
 import sidmeyer.l2shop.dto.CategoryDto;
 import sidmeyer.l2shop.dto.ProductDto;
-import sidmeyer.l2shop.core.service.ProductsService;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * Created by Stas on 16.08.2018.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:3000"})
 public class ProductsController {
 
 	@Autowired

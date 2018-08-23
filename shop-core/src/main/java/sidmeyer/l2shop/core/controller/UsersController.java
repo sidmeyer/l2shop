@@ -1,11 +1,16 @@
 package sidmeyer.l2shop.core.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sidmeyer.l2shop.api.Api;
+import sidmeyer.l2shop.core.exceptions.UserNotFoundException;
 import sidmeyer.l2shop.core.model.User;
 import sidmeyer.l2shop.core.service.UsersService;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -23,14 +28,22 @@ public class UsersController {
 	}
 
 	@RequestMapping(path = Api.Users.USERS_PATH, method = RequestMethod.POST)
-	public long createUser(@RequestBody User user) {
-		return usersService.createUser(user);
+	public ResponseEntity<User> createUser(@RequestBody User user) {
+		User createdUser = usersService.createUser(user);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(createdUser.getId()).toUri();
+		return ResponseEntity.created(location).build();
 	}
 
 	@RequestMapping(path = Api.Users.USERS_ID_PATH, method = RequestMethod.PUT)
-	public long updateUser(@PathVariable long userId, @RequestBody User user) {
+	public ResponseEntity<User> updateUser(@PathVariable long userId, @RequestBody User user) {
 		user.setId(userId);
-		return userId;
+		try {
+			usersService.updateUser(user);
+		} catch (UserNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.noContent().build();
 	}
 
 	@RequestMapping(path = Api.Users.USERS_ID_PATH, method = RequestMethod.DELETE)
@@ -40,7 +53,8 @@ public class UsersController {
 	}
 
 	@RequestMapping(path = Api.Users.USERS_ID_PATH, method = RequestMethod.GET)
-	public User getUser(@PathVariable long userId) {
-		return usersService.getUser(userId);
+	public ResponseEntity<User> getUser(@PathVariable long userId) {
+		User user = usersService.getUser(userId);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 }
