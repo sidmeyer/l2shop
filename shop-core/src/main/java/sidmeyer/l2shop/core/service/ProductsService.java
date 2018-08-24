@@ -2,6 +2,7 @@ package sidmeyer.l2shop.core.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sidmeyer.l2shop.core.exceptions.ProductNotFoundException;
 import sidmeyer.l2shop.core.model.Category;
 import sidmeyer.l2shop.core.model.Product;
 import sidmeyer.l2shop.core.repository.CategoriesDao;
@@ -9,15 +10,13 @@ import sidmeyer.l2shop.core.repository.ProductsDao;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Stas on 15.08.2018.
  */
 @Service
-public class ProductsService {
+public class ProductsService implements IProductsService {
 
 	@Autowired
 	private ProductsDao productsDao;
@@ -25,41 +24,51 @@ public class ProductsService {
 	@Autowired
 	private CategoriesDao categoriesDao;
 
-	public long createProduct(final Product product) {
-		return productsDao.save(product).getId();
+	@Override
+	public Product createProduct(final Product product) {
+		return productsDao.save(product);
 	}
 
-	public void editProduct(final Product product) {
-		productsDao.save(product);
+	@Override
+	public Product updateProduct(final Product product) {
+		if (!productsDao.findById(product.getId()).isPresent()) {
+			throw new ProductNotFoundException("Product  with id " + product.getId() + " does not exist.");
+		}
+		return productsDao.save(product);
 	}
 
+	@Override
 	public List<Product> getProducts() {
 		return (List<Product>) productsDao.findAll();
 	}
 
+	@Override
 	public Product getProduct(final long productId) {
 		return productsDao.findById(productId).get();
 	}
 
+	@Override
 	public void deleteProduct(final long productId) {
 		productsDao.deleteById(productId);
 	}
 
-	public Set<Category> getCategoriesForProduct(final long productId) {
+	public List<Category> getCategoriesForProduct(final long productId) {
 		return productsDao.findById(productId).get().getCategories();
 	}
 
-	public void editProductCategories(final long productId, final Set<Category> categories) {
+	public void editProductCategories(final long productId, final List<Category> categories) {
 		Product product = productsDao.findById(productId).get();
 		product.setCategories(categories);
 		productsDao.save(product);
 	}
 
-	public Set<Category> getAllCategories() {
-		List<Category> categoriesList = (List<Category>) categoriesDao.findAll();
-		return new HashSet<>(categoriesList);
+	@Override
+	public List<Category> getAllCategories() {
+		List<Category> categories = (List<Category>) categoriesDao.findAll();
+		return categories;
 	}
 
+	@Override
 	public void addCategoryToProduct(final long productId, final long categoryId) {
 		Category category = categoriesDao.findById(categoryId).get();
 		Product product = getProduct(productId);
@@ -67,6 +76,7 @@ public class ProductsService {
 		productsDao.save(product);
 	}
 
+	@Override
 	public void deleteCategoryFromProduct(final long productId, final long categoryId) {
 		Category category = categoriesDao.findById(categoryId).get();
 		Product product = getProduct(productId);
@@ -104,14 +114,14 @@ public class ProductsService {
 		pepsi.setName("Pepsi");
 		pepsi.setPrice(8.5);
 		pepsi.setImageUrl("https://www.pepsi.com/en-us/uploads/images/can-real-sugar-reg.png");
-		pepsi.setCategories(Collections.singleton(category2));
+		pepsi.setCategories(Collections.singletonList(category2));
 		productsDao.save(pepsi);
 
 		Product lemonade = new Product();
 		lemonade.setName("Lemonade");
 		lemonade.setPrice(7.40);
 		lemonade.setImageUrl("https://assets.simplyrecipes.com/wp-content/uploads/2006/06/lemonade-640-dm.jpg");
-		lemonade.setCategories(Collections.singleton(category2));
+		lemonade.setCategories(Collections.singletonList(category2));
 		productsDao.save(lemonade);
 
 		System.err.println("TEST PRODUCTS CREATED");

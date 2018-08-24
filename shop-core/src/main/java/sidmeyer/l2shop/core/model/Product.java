@@ -3,7 +3,7 @@ package sidmeyer.l2shop.core.model;
 import sidmeyer.l2shop.dto.ProductDto;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by Stas on 14.08.2018.
@@ -23,10 +23,10 @@ public class Product {
 	private String imageUrl;
 
 	@ManyToMany
-	private Set<Category> categories;
+	private List<Category> categories;
 
 	@OneToMany(mappedBy = "product")
-	private Set<ProductInOrder> productInOrder;
+	private List<ProductInOrder> productInOrder;
 
 	public Product(long id, String name, double price, String imageUrl/*, Set<ProductInOrder> productInOrder*/) {
 		this.id = id;
@@ -99,11 +99,11 @@ public class Product {
 //	}
 
 
-	public Set<Category> getCategories() {
+	public List<Category> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(Set<Category> categories) {
+	public void setCategories(List<Category> categories) {
 		this.categories = categories;
 	}
 }

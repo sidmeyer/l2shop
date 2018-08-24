@@ -8,7 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sidmeyer.l2shop.api.Api;
 import sidmeyer.l2shop.core.exceptions.UserNotFoundException;
 import sidmeyer.l2shop.core.model.User;
-import sidmeyer.l2shop.core.service.UsersService;
+import sidmeyer.l2shop.core.service.IUsersService;
 
 import java.net.URI;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 public class UsersController {
 
 	@Autowired
-	private UsersService usersService;
+	private IUsersService usersService;
 
 	@RequestMapping(path = Api.Users.USERS_PATH, method = RequestMethod.GET)
 	public List<User> getUsers() {

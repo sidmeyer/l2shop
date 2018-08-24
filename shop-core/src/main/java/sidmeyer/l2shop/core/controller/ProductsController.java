@@ -1,15 +1,20 @@
 package sidmeyer.l2shop.core.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sidmeyer.l2shop.api.Api;
+import sidmeyer.l2shop.core.exceptions.ProductNotFoundException;
 import sidmeyer.l2shop.core.model.Category;
 import sidmeyer.l2shop.core.model.Product;
-import sidmeyer.l2shop.core.service.ProductsService;
+import sidmeyer.l2shop.core.service.IProductsService;
 import sidmeyer.l2shop.dto.CategoryDto;
 import sidmeyer.l2shop.dto.ProductDto;
 
-import java.util.Set;
+import java.net.URI;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -20,25 +25,31 @@ import java.util.stream.Collectors;
 public class ProductsController {
 
 	@Autowired
-	private ProductsService productsService;
+	private IProductsService productsService;
 
-//	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(path = Api.Products.PRODUCTS_PATH, method = RequestMethod.POST)
-	public long createProduct(@RequestBody ProductDto productDto) {
-		return productsService.createProduct(Product.createFromDto(productDto));
+	public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+		final Product createdProduct = productsService.createProduct(Product.createFromDto(productDto));
+
+		final URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(createdProduct.getId()).toUri();
+
+		return ResponseEntity.created(location).build();
+
 	}
 
 	@RequestMapping(path = Api.Products.PRODUCTS_PATH, method = RequestMethod.GET)
-	public Set<ProductDto> getProducts() {
+	public List<ProductDto> getProducts() {
 		return productsService.getProducts()
 				.stream()
 				.map(Product::toDto)
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
 	}
 
 	@RequestMapping(path = Api.Products.PRODUCTS_ID_PATH, method = RequestMethod.GET)
-	public ProductDto getProduct(@PathVariable long productId) {
-		return productsService.getProduct(productId).toDto();
+	public ResponseEntity<ProductDto> getProduct(@PathVariable long productId) {
+		final ProductDto productDto = productsService.getProduct(productId).toDto();
+		return new ResponseEntity<>(productDto, HttpStatus.OK);
 	}
 
 	@RequestMapping(path = Api.Products.PRODUCTS_ID_PATH, method = RequestMethod.DELETE)
@@ -48,35 +59,47 @@ public class ProductsController {
 	}
 
 	@RequestMapping(path = Api.Products.PRODUCTS_ID_PATH, method = RequestMethod.PUT)
-	public String editProduct(@RequestBody ProductDto productDto) {
-		productsService.editProduct(Product.createFromDto(productDto));
-		return "Product with id " + productDto.getId() + " was updated.";
+	public ResponseEntity<ProductDto> updateProduct(@PathVariable long productId, @RequestBody ProductDto productDto) {
+		final Product product = Product.createFromDto(productDto);
+		try {
+			productsService.updateProduct(product);
+		} catch (ProductNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+		productsService.updateProduct(product);
+		return ResponseEntity.noContent().build();
 	}
 
 	@RequestMapping(path = Api.Products.PRODUCTS_CATEGORIES_PATH, method = RequestMethod.GET)
-	public Set<CategoryDto> getProductCategories(@PathVariable long productId) {
-		return productsService.getCategoriesForProduct(productId)
-				.stream()
+	public List<CategoryDto> getProductCategories(@PathVariable long productId) {
+		return productsService.getProduct(productId)
+				.getCategories().stream()
 				.map(Category::toDto)
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
+//		return productsService.getCategoriesForProduct(productId)
+//				.stream()
+//				.map(Category::toDto)
+//				.collect(Collectors.toList());
 	}
 
 	@RequestMapping(path = Api.Products.PRODUCTS_CATEGORIES_PATH, method = RequestMethod.POST)
-	public String editProductCategories(@PathVariable long productId, @RequestBody Set<CategoryDto> categoryDtos) {
-		Set<Category> categories = categoryDtos
+	public String updateProductCategories(@PathVariable long productId, @RequestBody List<CategoryDto> categoryDtos) {
+		List<Category> categories = categoryDtos
 				.stream()
 				.map(Category::createFromDto)
-				.collect(Collectors.toSet());
-		productsService.editProductCategories(productId, categories);
-		return "Categories for product with id " + productId + " was edited";
+				.collect(Collectors.toList());
+		final Product product = productsService.getProduct(productId);
+		product.setCategories(categories);
+		productsService.updateProduct(product);
+		return "Categories for product with id " + productId + " was updated";
 	}
 
 	@RequestMapping(path = Api.Categories.CATEGORIES_PATH, method = RequestMethod.GET)
-	public Set<CategoryDto> getAllCategories() {
+	public List<CategoryDto> getAllCategories() {
 		return productsService.getAllCategories()
 				.stream()
 				.map(Category::toDto)
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
 	}
 
 	@RequestMapping(path = Api.Products.PRODUCTS_CATEGORIES_ID_PATH, method = RequestMethod.POST)

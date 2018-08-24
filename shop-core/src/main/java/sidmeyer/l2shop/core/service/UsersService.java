@@ -13,30 +13,35 @@ import java.util.List;
  * Created by Stas on 15.08.2018.
  */
 @Service
-public class UsersService {
+public class UsersService implements IUsersService {
 
 	@Autowired
 	private UsersDao usersDao;
 
+	@Override
 	public User createUser(final User user) {
 		return usersDao.save(user);
 	}
 
+	@Override
 	public List<User> getUsers() {
 		return (List<User>) usersDao.findAll();
 	}
 
-	public void updateUser(final User user) {
+	@Override
+	public User updateUser(final User user) {
 		if (!usersDao.findById(user.getId()).isPresent()) {
 			throw new UserNotFoundException("User with id " + user.getId() + " does not exist.");
 		}
-		usersDao.save(user);
+		return usersDao.save(user);
 	}
 
-	public void deleteUser(long userId) {
+	@Override
+	public void deleteUser(final long userId) {
 		usersDao.deleteById(userId);
 	}
 
+	@Override
 	public User getUser(final long userId) {
 		return usersDao.findById(userId).get();
 	}
