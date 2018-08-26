@@ -4,16 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sidmeyer.l2shop.api.Api;
+import sidmeyer.l2shop.core.controller.dtohelpers.CategoryDtoHelper;
+import sidmeyer.l2shop.core.controller.dtohelpers.ProductDtoHelper;
 import sidmeyer.l2shop.core.exceptions.ProductNotFoundException;
+import sidmeyer.l2shop.core.exceptions.http.NotFoundException;
 import sidmeyer.l2shop.core.model.Category;
 import sidmeyer.l2shop.core.model.Product;
 import sidmeyer.l2shop.core.service.IProductsService;
 import sidmeyer.l2shop.dto.CategoryDto;
 import sidmeyer.l2shop.dto.ProductDto;
 
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,96 +22,54 @@ import java.util.stream.Collectors;
  * Created by Stas on 16.08.2018.
  */
 @RestController
+@RequestMapping(Api.ROOT)
 @CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:3000"})
 public class ProductsController {
 
-	@Autowired
-	private IProductsService productsService;
+    @Autowired
+    private IProductsService productsService;
 
-	@RequestMapping(path = Api.Products.PRODUCTS_PATH, method = RequestMethod.POST)
-	public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
-		final Product createdProduct = productsService.createProduct(Product.createFromDto(productDto));
+    @RequestMapping(path = Api.Products.PRODUCTS, method = RequestMethod.GET)
+    public List<ProductDto> getProducts(@RequestParam(name = "shownotinstock", required = false, defaultValue = "false") boolean showNotInStock) {
+        return productsService.getProducts()
+                .stream()
+                .filter(product -> {
+                    if (product.getInStock() > 0 || showNotInStock) {
+                        return true;
+                    }
+                    return false;
+                })
+                .map(ProductDtoHelper::productToDto)
+                .collect(Collectors.toList());
+    }
 
-		final URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(createdProduct.getId()).toUri();
+    @RequestMapping(path = Api.Products.PRODUCTS_ID, method = RequestMethod.GET)
+    public ResponseEntity<ProductDto> getProduct(@PathVariable long productId) {
+        final ProductDto productDto;
+        try {
+            Product product = productsService.getProduct(productId);
+            productDto = ProductDtoHelper.productToDto(product);
+        } catch (ProductNotFoundException e) {
+            throw new NotFoundException("Product with ID {} does not exist.", productId);
+        }
+        return new ResponseEntity<>(productDto, HttpStatus.OK);
+    }
 
-		return ResponseEntity.created(location).build();
+    @RequestMapping(path = Api.Products.PRODUCTS_CATEGORIES, method = RequestMethod.GET)
+    public List<CategoryDto> getProductCategories(@PathVariable long productId) {
+        return productsService.getProduct(productId)
+                .getCategories().stream()
+                .map(Category::toDto)
+                .collect(Collectors.toList());
+    }
 
-	}
 
-	@RequestMapping(path = Api.Products.PRODUCTS_PATH, method = RequestMethod.GET)
-	public List<ProductDto> getProducts() {
-		return productsService.getProducts()
-				.stream()
-				.map(Product::toDto)
-				.collect(Collectors.toList());
-	}
-
-	@RequestMapping(path = Api.Products.PRODUCTS_ID_PATH, method = RequestMethod.GET)
-	public ResponseEntity<ProductDto> getProduct(@PathVariable long productId) {
-		final ProductDto productDto = productsService.getProduct(productId).toDto();
-		return new ResponseEntity<>(productDto, HttpStatus.OK);
-	}
-
-	@RequestMapping(path = Api.Products.PRODUCTS_ID_PATH, method = RequestMethod.DELETE)
-	public String deleteProduct(@PathVariable long productId) {
-		productsService.deleteProduct(productId);
-		return "Product with id " + productId + " was deleted.";
-	}
-
-	@RequestMapping(path = Api.Products.PRODUCTS_ID_PATH, method = RequestMethod.PUT)
-	public ResponseEntity<ProductDto> updateProduct(@PathVariable long productId, @RequestBody ProductDto productDto) {
-		final Product product = Product.createFromDto(productDto);
-		try {
-			productsService.updateProduct(product);
-		} catch (ProductNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
-		productsService.updateProduct(product);
-		return ResponseEntity.noContent().build();
-	}
-
-	@RequestMapping(path = Api.Products.PRODUCTS_CATEGORIES_PATH, method = RequestMethod.GET)
-	public List<CategoryDto> getProductCategories(@PathVariable long productId) {
-		return productsService.getProduct(productId)
-				.getCategories().stream()
-				.map(Category::toDto)
-				.collect(Collectors.toList());
-//		return productsService.getCategoriesForProduct(productId)
-//				.stream()
-//				.map(Category::toDto)
-//				.collect(Collectors.toList());
-	}
-
-	@RequestMapping(path = Api.Products.PRODUCTS_CATEGORIES_PATH, method = RequestMethod.POST)
-	public String updateProductCategories(@PathVariable long productId, @RequestBody List<CategoryDto> categoryDtos) {
-		List<Category> categories = categoryDtos
-				.stream()
-				.map(Category::createFromDto)
-				.collect(Collectors.toList());
-		final Product product = productsService.getProduct(productId);
-		product.setCategories(categories);
-		productsService.updateProduct(product);
-		return "Categories for product with id " + productId + " was updated";
-	}
-
-	@RequestMapping(path = Api.Categories.CATEGORIES_PATH, method = RequestMethod.GET)
-	public List<CategoryDto> getAllCategories() {
-		return productsService.getAllCategories()
-				.stream()
-				.map(Category::toDto)
-				.collect(Collectors.toList());
-	}
-
-	@RequestMapping(path = Api.Products.PRODUCTS_CATEGORIES_ID_PATH, method = RequestMethod.POST)
-	public String addCategoryToProduct(@PathVariable long productId, @PathVariable long categoryId) {
-		productsService.addCategoryToProduct(productId, categoryId);
-		return "Category with ID " + categoryId + " has been added to product with ID " + productId;
-	}
-
-	@RequestMapping(path = Api.Products.PRODUCTS_CATEGORIES_ID_PATH, method = RequestMethod.DELETE)
-	public String deleteCategoryFromProduct(@PathVariable long productId, @PathVariable long categoryId) {
-		productsService.deleteCategoryFromProduct(productId, categoryId);
-		return "Category with ID " + categoryId + " has been deleted from product with ID " + productId;
-	}
+    @RequestMapping(path = Api.Categories.CATEGORIES, method = RequestMethod.GET)
+    public ResponseEntity<List<CategoryDto>> getAllCategories() {
+        List<CategoryDto> categories = productsService.getAllCategories()
+                .stream()
+                .map(CategoryDtoHelper::categoryToDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
 }

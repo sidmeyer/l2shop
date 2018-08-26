@@ -3,14 +3,14 @@ package sidmeyer.l2shop.dto;
 import sidmeyer.l2shop.commons.OrderStatus;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by Stas on 17.08.2018.
  */
 public class OrderDto {
 	private long id;
-	private Set<ProductInOrderDto> productsInOrders;
+    private List<ProductInOrderDto> productsInOrders;
 	private long userId;
 	private String deliveryAddress;
 	private OrderStatus status;
@@ -26,11 +26,11 @@ public class OrderDto {
 		this.id = id;
 	}
 
-	public Set<ProductInOrderDto> getProductsInOrders() {
+    public List<ProductInOrderDto> getProductsInOrders() {
 		return productsInOrders;
 	}
 
-	public void setProductsInOrders(Set<ProductInOrderDto> productsInOrders) {
+    public void setProductsInOrders(List<ProductInOrderDto> productsInOrders) {
 		this.productsInOrders = productsInOrders;
 	}
 

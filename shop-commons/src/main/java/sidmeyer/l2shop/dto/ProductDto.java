@@ -1,5 +1,7 @@
 package sidmeyer.l2shop.dto;
 
+import java.util.List;
+
 /**
  * Created by Stas on 17.08.2018.
  */
@@ -8,6 +10,8 @@ public class ProductDto {
 	private String name;
 	private String imageUrl;
 	private double price;
+	private List<CategoryDto> categories;
+	private int inStock;
 
 	public long getId() {
 		return id;
@@ -39,6 +43,22 @@ public class ProductDto {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public List<CategoryDto> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<CategoryDto> categories) {
+		this.categories = categories;
+	}
+
+	public int getInStock() {
+		return inStock;
+	}
+
+	public void setInStock(int inStock) {
+		this.inStock = inStock;
 	}
 
 	@Override

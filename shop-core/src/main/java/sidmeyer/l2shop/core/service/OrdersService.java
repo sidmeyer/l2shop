@@ -12,10 +12,10 @@ import sidmeyer.l2shop.core.repository.OrdersDao;
 import sidmeyer.l2shop.core.repository.ProductsInOrdersDao;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 /**
  * Created by Stas on 14.08.2018.
@@ -51,9 +51,18 @@ public class OrdersService implements IOrdersService {
 		return (List<Order>) ordersDao.findAll();
 	}
 
+    @Override
+    public List<Order> getOrdersByUser(final long userId) {
+        return ordersDao.findByUserId(userId);
+    }
+
 	@Override
 	public Order getOrder(final long orderId) {
-		return ordersDao.findById(orderId).get();
+        Optional<Order> orderOptional = ordersDao.findById(orderId);
+        if (!orderOptional.isPresent()) {
+            throw new OrderNotFoundException("Order with id " + orderId + " does not exist.");
+        }
+        return orderOptional.get();
 	}
 
 	@Override
@@ -62,10 +71,33 @@ public class OrdersService implements IOrdersService {
 	}
 
 	@Override
-	public Order updateOrder(final Order order) {
-		if (!ordersDao.findById(order.getId()).isPresent()) {
+    public Order updateOrderUser(final Order order) {
+        Optional<Order> existingOrderOptional = ordersDao.findById(order.getId());
+        if (!existingOrderOptional.isPresent()) {
+            throw new OrderNotFoundException("Order with id " + order.getId() + " does not exist.");
+        }
+        Order existingOrder = existingOrderOptional.get();
+
+        // prevent updating some fields
+        order.setCreatedDate(order.getCreatedDate());
+        order.setUser(existingOrder.getUser());
+        order.setDeleted(existingOrder.isDeleted());
+
+        return ordersDao.save(order);
+    }
+
+    @Override
+    public Order updateOrderAdmin(final Order order) {
+        Optional<Order> existingOrderOptional = ordersDao.findById(order.getId());
+        if (!existingOrderOptional.isPresent()) {
 			throw new OrderNotFoundException("Order with id " + order.getId() + " does not exist.");
 		}
+        Order existingOrder = existingOrderOptional.get();
+
+        // prevent updating some fields
+        order.setCreatedDate(order.getCreatedDate());
+        order.setUser(existingOrder.getUser());
+
 		return ordersDao.save(order);
 	}
 
@@ -95,7 +127,7 @@ public class OrdersService implements IOrdersService {
 
 		productsInOrdersDao.save(productInOrder);
 
-		Set<ProductInOrder> productsInOrders = new HashSet<>();
+        List<ProductInOrder> productsInOrders = new ArrayList<>();
 		productsInOrders.add(productInOrder);
 
 		order.setProductInOrder(productsInOrders);

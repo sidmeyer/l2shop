@@ -20,6 +20,8 @@ public class ProductInOrder implements Serializable {
 	//@JoinColumn(name = "product_id")
 	private Product product;
 
+    private double originalPrice;
+
 	@ManyToOne
 	//@JoinColumn(name = "order_id")
 	private Order order;
@@ -56,6 +58,14 @@ public class ProductInOrder implements Serializable {
 	public Product getProduct() {
 		return product;
 	}
+
+    public double getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(double originalPrice) {
+        this.originalPrice = originalPrice;
+    }
 
 	public void setProduct(Product product) {
 		this.product = product;

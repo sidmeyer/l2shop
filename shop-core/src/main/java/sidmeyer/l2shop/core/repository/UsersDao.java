@@ -9,4 +9,6 @@ import sidmeyer.l2shop.core.model.User;
  */
 @Repository
 public interface UsersDao extends CrudRepository<User, Long> {
+
+    User findByEmailIgnoreCase(final String email);
 }

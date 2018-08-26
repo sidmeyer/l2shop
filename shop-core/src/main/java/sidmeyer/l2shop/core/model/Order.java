@@ -1,12 +1,11 @@
 package sidmeyer.l2shop.core.model;
 
+import org.hibernate.annotations.CreationTimestamp;
 import sidmeyer.l2shop.commons.OrderStatus;
-import sidmeyer.l2shop.dto.OrderDto;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 /**
  * Created by Stas on 14.08.2018.
@@ -20,7 +19,7 @@ public class Order {
 	private long id;
 
 	@OneToMany(mappedBy = "order")
-	private Set<ProductInOrder> productInOrder;
+    private List<ProductInOrder> productInOrder;
 
 	@ManyToOne
 	private User user;
@@ -29,38 +28,14 @@ public class Order {
 
 	private OrderStatus status;
 
-	private Date createdDate;
+    @CreationTimestamp
+    private Date createdDate;
 
 	private Date finishedDate;
 
-	public Order(/*long id, */Set<ProductInOrder> productInOrder, User user) {
-//		this.id = id;
-		this.productInOrder = productInOrder;
-		this.user = user;
-	}
+    private boolean isDeleted;
 
 	public Order() {
-	}
-
-	public static Order createFromDto(final OrderDto dto) {
-		Order order = new Order();
-		order.setId(dto.getId());
-		order.setDeliveryAddress(dto.getDeliveryAddress());
-		order.setStatus(dto.getStatus());
-		order.setCreatedDate(dto.getCreatedDate());
-		order.setFinishedDate(dto.getFinishedDate());
-		return order;
-	}
-
-	public OrderDto toDto() {
-		OrderDto dto = new OrderDto();
-		dto.setId(id);
-		dto.setUserId(user.getId());
-		dto.setDeliveryAddress(deliveryAddress);
-		dto.setStatus(status);
-		dto.setCreatedDate(createdDate);
-		dto.setFinishedDate(finishedDate);
-		return dto;
 	}
 
 	public long getId() {
@@ -71,11 +46,11 @@ public class Order {
 		this.id = id;
 	}
 
-	public Set<ProductInOrder> getProductInOrder() {
+    public List<ProductInOrder> getProductInOrder() {
 		return productInOrder;
 	}
 
-	public void setProductInOrder(Set<ProductInOrder> productInOrder) {
+    public void setProductInOrder(List<ProductInOrder> productInOrder) {
 		this.productInOrder = productInOrder;
 	}
 
@@ -118,4 +93,12 @@ public class Order {
 	public void setFinishedDate(Date finishedDate) {
 		this.finishedDate = finishedDate;
 	}
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 }

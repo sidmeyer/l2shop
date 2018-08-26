@@ -13,7 +13,7 @@ class ProductDetails extends Component {
     }
 
     componentDidMount() {
-        fetch('http://127.0.0.1:8080/products/' + this.state.id)
+        fetch('http://127.0.0.1:8080/api/products/' + this.state.id)
             .then(response => {
                 return response.json();
             })

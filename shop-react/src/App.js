@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
-import ProductForm from './products/ProductForm';
 import Header from './Header';
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import ProductList from "./products/ProductList";
 import Cart from "./Cart";
 import ProductDetails from "./products/ProductDetails";
+import ProductAdd from "./products/ProductAdd";
 
 class App extends Component {
 
@@ -21,6 +21,7 @@ class App extends Component {
                   <Route path="/products/list" component={ProductList} />
                   <Route path="/cart" component={Cart} />
                   <Route path="/products/:id" component={ProductDetails} />
+                  <Route path="/admin/products/add" component={ProductAdd}/>
               </Switch>
           </BrowserRouter>
 

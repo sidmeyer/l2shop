@@ -52,12 +52,20 @@ public class UsersService implements IUsersService {
 		// create test users
 		User admin = new User();
 		admin.setAdmin(true);
-		admin.setName("admin1");
+        admin.setName("admin");
+        admin.setEmail("a@a.a");
+        admin.setPassword("$2a$04$0bFhduHgyPjLd/vNglfcq.9khw5EJ/GRxejJT8HXP9P/ysZ5Mk29G");
+        admin.setActive(true);
+        admin.setAdmin(true);
 		usersDao.save(admin);
 
 		User user = new User();
 		user.setAdmin(false);
-		user.setName("user1");
+        user.setName("user");
+        user.setEmail("u@u.u");
+        user.setPassword("$2a$04$q66Fuh1MrRhqthvBwo4NXeJOTjaOuWKV66dPqyuUR/hgi17zPoGte");
+        user.setActive(true);
+        user.setAdmin(false);
 		usersDao.save(user);
 
 		System.err.println("TEST USERS CREATED");

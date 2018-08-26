@@ -108,11 +108,16 @@ public class ProductsService implements IProductsService {
 		category4.setParentCategory(category1);
 		categoriesDao.save(category4);
 
+        Category category5 = new Category();
+        category5.setName("Electronics");
+        categoriesDao.save(category5);
+
 		// create test products
 
 		Product pepsi = new Product();
 		pepsi.setName("Pepsi");
 		pepsi.setPrice(8.5);
+        pepsi.setInStock(1000);
 		pepsi.setImageUrl("https://www.pepsi.com/en-us/uploads/images/can-real-sugar-reg.png");
 		pepsi.setCategories(Collections.singletonList(category2));
 		productsDao.save(pepsi);
@@ -120,9 +125,18 @@ public class ProductsService implements IProductsService {
 		Product lemonade = new Product();
 		lemonade.setName("Lemonade");
 		lemonade.setPrice(7.40);
+        lemonade.setInStock(5);
 		lemonade.setImageUrl("https://assets.simplyrecipes.com/wp-content/uploads/2006/06/lemonade-640-dm.jpg");
 		lemonade.setCategories(Collections.singletonList(category2));
 		productsDao.save(lemonade);
+
+        Product xiaomi = new Product();
+        xiaomi.setName("Xiaomi Redmi 3S");
+        xiaomi.setPrice(102.60);
+        xiaomi.setInStock(0);
+        xiaomi.setImageUrl("https://static.digit.in/product/f160e6c2017e9a34b730ba6fc505d7246f9d2401.jpeg");
+        xiaomi.setCategories(Collections.singletonList(category4));
+        productsDao.save(xiaomi);
 
 		System.err.println("TEST PRODUCTS CREATED");
 	}

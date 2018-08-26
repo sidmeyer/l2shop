@@ -10,7 +10,7 @@ class ProductForm extends Component {
         event.preventDefault();
         const data = new FormData(event.target);
 
-        fetch('http://127.0.0.1:8080/products', {
+        fetch('http://127.0.0.1:8080/api/admin/products', {
             method: 'POST',
             body: JSON.stringify({
                 id: data.get('id'),

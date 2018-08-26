@@ -25,6 +25,8 @@ public class Product {
 	@ManyToMany
 	private List<Category> categories;
 
+    private int inStock;
+
 	@OneToMany(mappedBy = "product")
 	private List<ProductInOrder> productInOrder;
 
@@ -106,4 +108,25 @@ public class Product {
 	public void setCategories(List<Category> categories) {
 		this.categories = categories;
 	}
+
+    public int getInStock() {
+        return inStock;
+    }
+
+    public void setInStock(int inStock) {
+        this.inStock = inStock;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", categories=" + categories +
+                ", inStock=" + inStock +
+                ", productInOrder=" + productInOrder +
+                '}';
+    }
 }
