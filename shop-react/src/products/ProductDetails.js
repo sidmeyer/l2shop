@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import '../App.css';
+import Cart from "../Cart";
+import {AppSettings} from "../App";
 
 class ProductDetails extends Component {
 
@@ -7,13 +9,13 @@ class ProductDetails extends Component {
         super();
 
         this.state = {
-            productJson: {},
+            productJson: {categories: []},
             id: props.match.params.id
         };
     }
 
     componentDidMount() {
-        fetch('http://127.0.0.1:8080/api/products/' + this.state.id)
+        fetch(AppSettings.backEndUrl + '/api/products/' + this.state.id)
             .then(response => {
                 return response.json();
             })
@@ -40,7 +42,8 @@ class ProductDetails extends Component {
                         <td rowSpan="4" align="center"><img src={productJson.imageUrl} alt={productJson.name} width="150"/></td>
                     </tr>
                     <tr>
-                        <td>description. in prrogress...</td>
+                        <td>Categories:<br/><br/>{this.state.productJson.categories.map(cat => <div><a
+                            href={'http://localhost:3000/products/list?category=' + cat.id}>{cat.name}</a></div>)}</td>
                     </tr>
                     <tr>
                         <td>Price: ${productJson.price}</td>
@@ -50,8 +53,9 @@ class ProductDetails extends Component {
                     </tr>
                     </tbody>
                 </table>
-                <input className="cta" type="button" value="Add to cart"/>
-
+                {/*<input className="cta" type="button" value="Add to cart" onClick={() => Cart.addProduct(productJson, 1)}/>*/}
+                <input className="cta" type="button" value="Add to cart"
+                       onClick={() => Cart.addProductSS(productJson, 1)}/>
             </div>
         )
     }

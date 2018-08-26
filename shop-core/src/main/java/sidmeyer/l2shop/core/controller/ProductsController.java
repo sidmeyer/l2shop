@@ -30,15 +30,12 @@ public class ProductsController {
     private IProductsService productsService;
 
     @RequestMapping(path = Api.Products.PRODUCTS, method = RequestMethod.GET)
-    public List<ProductDto> getProducts(@RequestParam(name = "shownotinstock", required = false, defaultValue = "false") boolean showNotInStock) {
+    public List<ProductDto> getProducts(@RequestParam(name = "shownotinstock", required = false, defaultValue = "false") boolean showNotInStock,
+                                        @RequestParam(name = "category", required = false, defaultValue = "0") long categoryId) {
         return productsService.getProducts()
                 .stream()
-                .filter(product -> {
-                    if (product.getInStock() > 0 || showNotInStock) {
-                        return true;
-                    }
-                    return false;
-                })
+                .filter(product -> product.getInStock() > 0 || showNotInStock)
+                .filter(product -> categoryId < 1 || product.getCategories().stream().anyMatch(category -> category.getId() == categoryId))
                 .map(ProductDtoHelper::productToDto)
                 .collect(Collectors.toList());
     }

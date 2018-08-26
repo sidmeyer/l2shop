@@ -23,7 +23,7 @@ public class OrderDtoHelper {
         List<ProductInOrderDto> productInOrderDtos = order.getProductInOrder().stream()
                 .map(ProductInOrderDtoHelper::productInOrderToDto)
                 .collect(Collectors.toList());
-        dto.setProductsInOrders(productInOrderDtos);
+        dto.setProductsInOrder(productInOrderDtos);
 
         return dto;
     }
@@ -40,7 +40,7 @@ public class OrderDtoHelper {
         user.setId(dto.getUserId());
         order.setUser(user);
 
-        List<ProductInOrder> productsInOrder = dto.getProductsInOrders().stream()
+        List<ProductInOrder> productsInOrder = dto.getProductsInOrder().stream()
                 .map(ProductInOrderDtoHelper::productInOrderFromDto)
                 .collect(Collectors.toList());
         order.setProductInOrder(productsInOrder);

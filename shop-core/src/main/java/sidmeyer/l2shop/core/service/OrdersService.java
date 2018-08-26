@@ -106,7 +106,7 @@ public class OrdersService implements IOrdersService {
 
 		// create test order
 
-		User user = usersService.getUsers().get(0);
+		User user = usersService.getUsers().get(1);
 
 		Order order = new Order();
 		order.setUser(user);

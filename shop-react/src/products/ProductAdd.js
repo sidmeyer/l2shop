@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {AppSettings} from "../App";
 
 class ProductAdd extends Component {
 
@@ -24,7 +25,7 @@ class ProductAdd extends Component {
     }
 
     componentDidMount() {
-        fetch('http://127.0.0.1:8080/api/categories/')
+        fetch(AppSettings.backEndUrl + '/api/categories/')
             .then(response => {
                 return response.json();
             })
@@ -36,10 +37,10 @@ class ProductAdd extends Component {
     }
 
     sendProduct() {
-        fetch('http://127.0.0.1:8080/api/admin/products/', {
+        fetch(AppSettings.backEndUrl + '/api/admin/products/', {
             method: 'POST',
             headers: {
-                'Authorization': 'Basic YUBhLmE6YWRtaW4=',
+                'Authorization': AppSettings.adminAuthToken,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(this.state.product)
@@ -50,7 +51,7 @@ class ProductAdd extends Component {
             .then(data => {
                 console.log("Data fetched: " + data);
             });
-        console.log("comp did mount");
+        alert('Product added.');
     }
 
     handleProductInputChange(event) {
@@ -74,7 +75,7 @@ class ProductAdd extends Component {
     }
 
     checkboxItem(item) {
-        return <div><label>{item.name}</label><input name={item.name} value={item} type="checkbox"
+        return <div><label>{item.name}</label><input name={item.name} type="checkbox"
                                                      onChange={this.updateSelectedCategories}/></div>
     }
 
@@ -84,16 +85,25 @@ class ProductAdd extends Component {
 
     updateSelectedCategories(event) {
         const target = event.target;
+        const allCategories = this.state.categories;
         console.log(target.name + ' ' + target.checked);
+
+        let currCat;
+        allCategories.forEach(cat => {
+            if (cat.name == target.name) {
+                currCat = cat;
+            }
+        });
+
         if (target.checked) {
-            this.selectedCategories.push(target.value);
+            this.selectedCategories.push(currCat);
         } else {
-            const index = this.selectedCategories.indexOf(target.value);
+            const index = this.selectedCategories.indexOf(currCat);
             if (index > -1) {
                 this.selectedCategories.splice(index, 1);
             }
         }
-        console.log('selected: ' + JSON.stringify(this.selectedCategories));
+
         const currProduct = this.state.product;
         currProduct.categories = this.selectedCategories;
         this.setState({product: currProduct});
@@ -122,13 +132,9 @@ class ProductAdd extends Component {
                            onChange={this.handleProductInputChange}/>
                     <br/><img src={product.imageUrl} alt={product.name} height="100"/>
                     <br/>
+                    {this.checkboxes(categories)}
                 </form>
-
                 <button onClick={this.sendProduct}>Submit</button>
-
-                {categories.map(cat => <div>{cat.name}</div>)}
-
-                {this.checkboxes(categories)}
             </div>
         );
     }

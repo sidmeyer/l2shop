@@ -3,7 +3,7 @@ package sidmeyer.l2shop.core.model;
 import sidmeyer.l2shop.dto.CategoryDto;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by Stas on 19.08.2018.
@@ -21,7 +21,7 @@ public class Category {
 	private Category parentCategory;
 
 	@ManyToMany(mappedBy = "categories")
-	private Set<Product> products;
+    private List<Product> products;
 
 	public static Category createFromDto(final CategoryDto dto) {
 		Category category = new Category();
@@ -69,11 +69,11 @@ public class Category {
 		this.parentCategory = parentCategory;
 	}
 
-	public Set<Product> getProducts() {
+    public List<Product> getProducts() {
 		return products;
 	}
 
-	public void setProducts(Set<Product> products) {
+    public void setProducts(List<Product> products) {
 		this.products = products;
 	}
 }

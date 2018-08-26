@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class OrderDto {
 	private long id;
-    private List<ProductInOrderDto> productsInOrders;
+	private List<ProductInOrderDto> productsInOrder;
 	private long userId;
 	private String deliveryAddress;
 	private OrderStatus status;
@@ -26,12 +26,12 @@ public class OrderDto {
 		this.id = id;
 	}
 
-    public List<ProductInOrderDto> getProductsInOrders() {
-		return productsInOrders;
+	public List<ProductInOrderDto> getProductsInOrder() {
+		return productsInOrder;
 	}
 
-    public void setProductsInOrders(List<ProductInOrderDto> productsInOrders) {
-		this.productsInOrders = productsInOrders;
+	public void setProductsInOrder(List<ProductInOrderDto> productsInOrder) {
+		this.productsInOrder = productsInOrder;
 	}
 
 	public long getUserId() {

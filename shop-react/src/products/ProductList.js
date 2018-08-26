@@ -1,15 +1,24 @@
 import React, {Component} from 'react';
 import '../App.css';
 import ProductItem from './ProductItem'
+import {AppSettings} from "../App";
 
 class ProductList extends Component {
 
-    constructor() {
+    constructor(props) {
         super();
+
+        let categoryId = 0;
+
+        try {
+            categoryId = props.location.search.replace(/.*category=(\d+).*/, "$1");
+        } catch (e) {
+        }
 
         this.state = {
             productsJson: [],
-            showNotInStock: false
+            showNotInStock: false,
+            categoryId: categoryId
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -17,7 +26,7 @@ class ProductList extends Component {
     }
 
     componentDidMount() {
-        fetch('http://127.0.0.1:8080/api/products?shownotinstock=' + this.state.showNotInStock)
+        fetch(AppSettings.backEndUrl + '/api/products?shownotinstock=' + this.state.showNotInStock + '&category=' + this.state.categoryId)
             .then(response => {
                 return response.json();
             })
