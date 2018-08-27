@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import '../App.css';
-import Cart from "../Cart";
+import '../../App.css';
+import Cart from "../orders/Cart";
 import {AppSettings} from "../App";
 
 class ProductDetails extends Component {
@@ -39,7 +39,8 @@ class ProductDetails extends Component {
                     <tbody>
                     <tr>
                         <td width="400"><b>{productJson.name}</b></td>
-                        <td rowSpan="4" align="center"><img src={productJson.imageUrl} alt={productJson.name} width="150"/></td>
+                        <td rowSpan="4" align="center"><img src={productJson.imageUrl} alt={productJson.name}
+                                                            width="150"/></td>
                     </tr>
                     <tr>
                         <td>Categories:<br/><br/>{this.state.productJson.categories.map(cat => <div><a
@@ -53,7 +54,6 @@ class ProductDetails extends Component {
                     </tr>
                     </tbody>
                 </table>
-                {/*<input className="cta" type="button" value="Add to cart" onClick={() => Cart.addProduct(productJson, 1)}/>*/}
                 <input className="cta" type="button" value="Add to cart"
                        onClick={() => Cart.addProductSS(productJson, 1)}/>
             </div>
