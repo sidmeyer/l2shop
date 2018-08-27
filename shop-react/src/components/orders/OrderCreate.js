@@ -82,7 +82,7 @@ class OrderCreate extends Component {
         } else if (isFieldsInvalid) {
             actionElement = <div>Fill in all requred fields</div>;
         } else {
-            actionElement = <button onClick={this.sendOrder}>Create order!</button>;
+            actionElement = <button className="cta" onClick={this.sendOrder}>Create order!</button>;
         }
 
         return (
@@ -119,7 +119,7 @@ class OrderCreate extends Component {
                     </tbody>
                 </table>
                 <br/>
-                <label>Delivery address</label>
+                <label>Delivery address *</label>
                 <input type="text" name="deliveryAddress" onChange={this.handleOrderInputChange}/>
                 <br/>
                 {actionElement}
@@ -127,6 +127,5 @@ class OrderCreate extends Component {
         );
     }
 }
-
 
 export default OrderCreate;

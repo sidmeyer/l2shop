@@ -117,13 +117,13 @@ class ProductAdd extends Component {
             <div className="add-product-page">
                 <h3>Add new product</h3>
                 <form>
-                    <label>Name</label>
+                    <label>Name *</label>
                     <input type="text" name="name" value={product.name} onChange={this.handleProductInputChange}/>
                     <br/>
-                    <label>Price</label>
+                    <label>Price *</label>
                     <input type="number" name="price" value={product.price} onChange={this.handleProductInputChange}/>
                     <br/>
-                    <label>In stock</label>
+                    <label>In stock *</label>
                     <input type="number" name="inStock" value={product.inStock}
                            onChange={this.handleProductInputChange}/>
                     <br/>

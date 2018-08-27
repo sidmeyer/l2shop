@@ -44,7 +44,7 @@ class ProductDetails extends Component {
                     </tr>
                     <tr>
                         <td>Categories:<br/><br/>{this.state.productJson.categories.map(cat => <div><a
-                            href={'http://localhost:3000/products/list?category=' + cat.id}>{cat.name}</a></div>)}</td>
+                            href={'/products/list?category=' + cat.id}>{cat.name}</a></div>)}</td>
                     </tr>
                     <tr>
                         <td>Price: ${productJson.price}</td>

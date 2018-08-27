@@ -77,7 +77,7 @@ class OrdersManageAdmin extends Component {
             <div className="cart">
                 Orders:<br/>
                 <br/>
-                <table className="wideTable" border="1">
+                <table className="wideTable" border="1" align="center">
                     <thead>
                     <tr>
                         <td>Order ID</td>

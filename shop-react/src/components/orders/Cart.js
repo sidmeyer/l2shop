@@ -93,9 +93,9 @@ class Cart extends Component {
     render() {
         return (
             <div className="cart">
-                Products in cart:<br/>
+                <h3>Products in cart:</h3><br/>
                 <br/>
-                <table>
+                <table align="center">
                     <tbody>
                     {JSON.parse(sessionStorage.getItem('productsInOrder')).map(pio => <tr>
                         <td>{pio.product.name}</td>

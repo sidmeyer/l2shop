@@ -52,7 +52,12 @@ class ProductList extends Component {
 
     render() {
         const {productsJson} = this.state;
-        console.log('showNotInStock render: ' + this.state.showNotInStock);
+
+        let message = <div></div>;
+
+        if (productsJson.length < 1) {
+            message = <div>Products with specified params not found</div>
+        }
 
         return (
 
@@ -63,6 +68,7 @@ class ProductList extends Component {
                            onChange={this.handleInputChange}/>
                 </label>
                 {productsJson.map(p => <ProductItem product={p}/>)}
+                {message}
             </div>
         )
     }

@@ -8,6 +8,7 @@ import ProductDetails from "./products/ProductDetails";
 import ProductAdd from "./products/ProductAdd";
 import OrderCreate from "./orders/OrderCreate";
 import OrdersManageAdmin from "./orders/OrdersManageAdmin";
+import CategoriesPanel from "./products/CategoriesPanel";
 
 class App extends Component {
 
@@ -21,8 +22,8 @@ class App extends Component {
                 <table align="center" width="1000">
                     <tbody>
                     <tr>
-                        <td className="leftColumn"></td>
-                        <td className="mainColumn">
+                        <td className="leftColumn" valign="top"><CategoriesPanel/></td>
+                        <td className="mainColumn" valign="top">
                             <BrowserRouter>
                                 <Switch>
                                     <Route path="/products/list" component={ProductList}/>
@@ -33,7 +34,7 @@ class App extends Component {
                                 </Switch>
                             </BrowserRouter>
                         </td>
-                        <td className="rightColumn">{App.cart}</td>
+                        <td className="rightColumn" valign="top">{App.cart}</td>
                     </tr>
                     </tbody>
                 </table>
