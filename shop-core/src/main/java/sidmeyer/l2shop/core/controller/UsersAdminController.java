@@ -14,20 +14,24 @@ import sidmeyer.l2shop.dto.UserDto;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Stas on 15.08.2018.
  */
 @RestController
 @RequestMapping(Api.ADMIN)
+@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:3000"})
 public class UsersAdminController {
 
 	@Autowired
 	private IUsersService usersService;
 
     @RequestMapping(path = Api.Users.USERS, method = RequestMethod.GET)
-	public List<User> getUsers() {
-		return usersService.getUsers();
+    public List<UserDto> getUsers() {
+        return usersService.getUsers().stream()
+                .map(UserDtoHelper::userToDto)
+                .collect(Collectors.toList());
 	}
 
     @RequestMapping(path = Api.Users.USERS, method = RequestMethod.POST)

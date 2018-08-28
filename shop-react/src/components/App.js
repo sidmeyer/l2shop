@@ -9,6 +9,7 @@ import ProductAdd from "./products/ProductAdd";
 import OrderCreate from "./orders/OrderCreate";
 import OrdersManageAdmin from "./orders/OrdersManageAdmin";
 import CategoriesPanel from "./products/CategoriesPanel";
+import UsersManageAdmin from "./users/UsersManageAdmin";
 
 class App extends Component {
 
@@ -31,6 +32,7 @@ class App extends Component {
                                     <Route path="/products/:id" component={ProductDetails}/>
                                     <Route path="/admin/products/add" component={ProductAdd}/>
                                     <Route path="/admin/orders" component={OrdersManageAdmin}/>
+                                    <Route path="/admin/users" component={UsersManageAdmin}/>
                                 </Switch>
                             </BrowserRouter>
                         </td>

@@ -37,7 +37,7 @@ class OrdersManageAdmin extends Component {
             });
     }
 
-    updateOrderStatus(orderId, state) {
+    updateOrderStatus(orderId, status) {
 
         let currOrder;
 
@@ -47,7 +47,7 @@ class OrdersManageAdmin extends Component {
             }
         });
 
-        currOrder.status = state;
+        currOrder.status = status;
 
         fetch(AppSettings.backEndUrl + '/api/admin/orders/' + orderId, {
             method: 'PUT',
@@ -64,7 +64,7 @@ class OrdersManageAdmin extends Component {
                 console.log("Data fetched: " + data);
 
                 this.getOrders();
-                alert('Order state updated!');
+                alert('Order status updated!');
             }, () => {
                 alert('An error occurred :(');
             });

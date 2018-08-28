@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import logo from '../logo.svg';
 import '../App.css';
+import LoginForm from "./login/LoginForm";
 
 class Header extends Component {
     render() {
@@ -18,6 +19,8 @@ class Header extends Component {
                         <td><a className="headerMenuItem" href="/cart">Cart</a></td>
                         <td><a className="headerMenuItem" href="/admin/products/add">Add product (admin)</a></td>
                         <td><a className="headerMenuItem" href="/admin/orders">Manage orders (admin)</a></td>
+                        <td><a className="headerMenuItem" href="/admin/users">Manage users (admin)</a></td>
+                        <td><LoginForm/></td>
                     </tr>
                     </tbody>
                 </table>

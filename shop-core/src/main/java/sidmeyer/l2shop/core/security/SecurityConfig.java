@@ -32,9 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin().disable();
         http.csrf().disable();
+        http.headers().frameOptions().disable();
         http
                 .authorizeRequests()
-                .requestMatchers(new AntPathRequestMatcher(Api.USER + "/**")).hasRole(ROLE_USER)
+                .requestMatchers(new AntPathRequestMatcher(Api.USER + "/**")).hasAnyRole(ROLE_USER, ROLE_ADMIN)
                 .requestMatchers(new AntPathRequestMatcher(Api.ADMIN + "/**")).hasRole(ROLE_ADMIN)
                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
