@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import '../../App.css';
 import {AppSettings} from "../App";
+import LoginForm from "../login/LoginForm";
 
 class OrdersManageAdmin extends Component {
 
@@ -22,7 +23,7 @@ class OrdersManageAdmin extends Component {
     getOrders() {
         fetch(AppSettings.backEndUrl + '/api/admin/orders/', {
             headers: {
-                'Authorization': AppSettings.adminAuthToken
+                'Authorization': sessionStorage.getItem('authToken')
             }
         })
             .then(response => {
@@ -33,7 +34,8 @@ class OrdersManageAdmin extends Component {
 
                 this.setState({orders: data});
             }, () => {
-                alert('An error occurred :(');
+                LoginForm.clearAuthData();
+                alert(AppSettings.defaultErrorMessageWithAuth);
             });
     }
 
@@ -52,7 +54,7 @@ class OrdersManageAdmin extends Component {
         fetch(AppSettings.backEndUrl + '/api/admin/orders/' + orderId, {
             method: 'PUT',
             headers: {
-                'Authorization': AppSettings.adminAuthToken,
+                'Authorization': sessionStorage.getItem('authToken'),
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(currOrder)
@@ -66,7 +68,8 @@ class OrdersManageAdmin extends Component {
                 this.getOrders();
                 alert('Order status updated!');
             }, () => {
-                alert('An error occurred :(');
+                LoginForm.clearAuthData();
+                alert(AppSettings.defaultErrorMessageWithAuth);
             });
     }
 

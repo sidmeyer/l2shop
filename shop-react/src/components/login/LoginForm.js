@@ -9,19 +9,27 @@ class LoginForm extends Component {
 
         this.state = {
             email: null,
-            password: null
+            password: null,
+            loggedIn: false
         };
 
         this.testLogin = this.testLogin.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.logout = this.logout.bind(this);
+    }
+
+    static clearAuthData() {
+        sessionStorage.setItem('userEmail', '');
+        sessionStorage.setItem('userPassword', '');
+        sessionStorage.setItem('isAdmin', 'false');
+        sessionStorage.setItem('authToken', '');
     }
 
     componentWillMount() {
         if (!sessionStorage.getItem('authToken') || sessionStorage.getItem('authToken').length < 5) {
-            sessionStorage.setItem('authToken', '');
+            LoginForm.clearAuthData();
         }
     }
-
 
     testLogin() {
         fetch(AppSettings.backEndUrl + '/api/user/users/', {
@@ -34,10 +42,11 @@ class LoginForm extends Component {
             })
             .then(data => {
                 console.log("Data fetched: " + JSON.stringify(data));
-
+                sessionStorage.setItem('isAdmin', '' + data.admin);
                 alert('Welcome, ' + data.name + '!');
             }, () => {
-                alert('An error occurred :(');
+                LoginForm.clearAuthData();
+                alert(AppSettings.defaultErrorMessageWithAuth);
             });
     }
 
@@ -50,20 +59,31 @@ class LoginForm extends Component {
         console.log(sessionStorage.getItem('userEmail') + ' / ' + sessionStorage.getItem('userPassword'));
         console.log(sessionStorage.getItem('authToken'));
         this.testLogin();
+        this.setState(this.state);
+    }
+
+    logout() {
+        LoginForm.clearAuthData();
+        this.setState(this.state);
     }
 
     render() {
         let emailField = <input required="true" type="email" name="email" placeholder="Email"/>;
-        let passwordField = <input required="true" type="text" name="password" placeholder="Password"/>;
+        let passwordField = <input required="true" type="password" name="password" placeholder="Password"/>;
+        this.state.loggedIn = sessionStorage.getItem('authToken').length > 5;
 
         let form = <form action="#">{emailField}</form>;
         return (
             <div className="loginForm">
-                <form action="#" onSubmit={this.handleSubmit}>
-                    {emailField}{passwordField}
-                    <input type="submit"/>
-                </form>
-                <br/>
+                <div hidden={this.state.loggedIn}>
+                    <form action="#" onSubmit={this.handleSubmit}>
+                        {emailField}{passwordField}
+                        <input type="submit"/>
+                    </form>
+                </div>
+                <div hidden={!this.state.loggedIn}>
+                    <button onClick={this.logout}>Logout</button>
+                </div>
             </div>
         );
     }

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import '../../App.css';
 import Cart from "./Cart";
 import {AppSettings} from "../App";
+import LoginForm from "../login/LoginForm";
 
 class OrderCreate extends Component {
 
@@ -33,7 +34,7 @@ class OrderCreate extends Component {
         fetch(AppSettings.backEndUrl + '/api/user/orders/', {
             method: 'POST',
             headers: {
-                'Authorization': AppSettings.userAuthToken,
+                'Authorization': sessionStorage.getItem('authToken'),
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(this.state.order)
@@ -54,7 +55,8 @@ class OrderCreate extends Component {
                 Cart.clearProductsInOrder();
                 alert('Order created!');
             }, () => {
-                alert('An error occurred :(');
+                LoginForm.clearAuthData();
+                alert(AppSettings.defaultErrorMessageWithAuth);
             });
     }
 

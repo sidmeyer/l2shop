@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import '../../App.css';
 import {AppSettings} from "../App";
+import LoginForm from "../login/LoginForm";
 
 class UsersManageAdmin extends Component {
 
@@ -23,7 +24,7 @@ class UsersManageAdmin extends Component {
     getUsers() {
         fetch(AppSettings.backEndUrl + '/api/admin/users/', {
             headers: {
-                'Authorization': AppSettings.adminAuthToken
+                'Authorization': sessionStorage.getItem('authToken')
             }
         })
             .then(response => {
@@ -34,7 +35,8 @@ class UsersManageAdmin extends Component {
 
                 this.setState({users: data});
             }, () => {
-                alert('An error occurred :(');
+                LoginForm.clearAuthData();
+                alert(AppSettings.defaultErrorMessageWithAuth);
             });
     }
 
@@ -69,7 +71,7 @@ class UsersManageAdmin extends Component {
         fetch(AppSettings.backEndUrl + '/api/admin/users/' + user.id, {
             method: 'PUT',
             headers: {
-                'Authorization': AppSettings.adminAuthToken,
+                'Authorization': sessionStorage.getItem('authToken'),
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(user)
@@ -83,7 +85,8 @@ class UsersManageAdmin extends Component {
                 this.getUsers();
                 alert('User updated!');
             }, () => {
-                alert('An error occurred :(');
+                LoginForm.clearAuthData();
+                alert(AppSettings.defaultErrorMessageWithAuth);
             });
     }
 

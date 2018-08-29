@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {AppSettings} from "../App";
+import LoginForm from "../login/LoginForm";
 
 class ProductAdd extends Component {
 
@@ -40,7 +41,7 @@ class ProductAdd extends Component {
         fetch(AppSettings.backEndUrl + '/api/admin/products/', {
             method: 'POST',
             headers: {
-                'Authorization': AppSettings.adminAuthToken,
+                'Authorization': sessionStorage.getItem('authToken'),
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(this.state.product)
@@ -49,9 +50,13 @@ class ProductAdd extends Component {
                 return response;
             })
             .then(data => {
+                alert('Product added.');
                 console.log("Data fetched: " + data);
+            }, () => {
+                LoginForm.clearAuthData();
+                alert(AppSettings.defaultErrorMessageWithAuth);
             });
-        alert('Product added.');
+
     }
 
     handleProductInputChange(event) {

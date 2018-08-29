@@ -25,6 +25,7 @@ class App extends Component {
                     <tr>
                         <td className="leftColumn" valign="top"><CategoriesPanel/></td>
                         <td className="mainColumn" valign="top">
+                            <h1>Go to products and buy something!</h1>
                             <BrowserRouter>
                                 <Switch>
                                     <Route path="/products/list" component={ProductList}/>
@@ -51,5 +52,6 @@ export default App;
 export const AppSettings = {
     backEndUrl: 'http://localhost:8080',
     adminAuthToken: 'Basic YUBhLmE6YWRtaW4=',
-    userAuthToken: 'Basic dUB1LnU6dXNlcg=='
+    userAuthToken: 'Basic dUB1LnU6dXNlcg==',
+    defaultErrorMessageWithAuth: 'Something went wrong :(\nCheck you are logged in'
 };
